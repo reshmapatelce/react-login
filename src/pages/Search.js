@@ -16,14 +16,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-const useStyles = makeStyles((theme) => ({
-	formControl: {
-		margin: theme.spacing(1),
-		minWidth: 120,
-	},
-}));
-
-
 // const classes = useStyles();
 class Search extends Component {
 	constructor(props) {
@@ -33,13 +25,18 @@ class Search extends Component {
 			toggle: true,
 			dateRange: null,
 			popupOpen: false,
-			store_val: 1
+			store_val_is: "is"
 		}
-		this.storeList = [
-			{ value: 1, label: "is" },
-			{ value: 2, label: "greater than" },
-			{ value: 3, label: "Less than" }
+		this.storeisList = [
+			{ value: "is", label: "is" },
+			{ value: "greater", label: "greater than" },
+			{ value: 'less', label: "Less than" }
 		];
+		this.storeList = [
+			{ value: "xyz", label: "xyz" },
+			{ value: "abc", label: "abc" },
+			{ value: "pqr", label: "pqr" }
+		]
 	}
 
 	handleChange = (e) => {
@@ -62,7 +59,7 @@ class Search extends Component {
 		this.setState({ popupOpen: false });
 	}
 	render() {
-		const { dtOpen, popupOpen, store_val } = this.state;
+		const { dtOpen, popupOpen, store_val_is, store_val } = this.state;
 		return (
 			<div>
 				<div className="row">
@@ -78,7 +75,7 @@ class Search extends Component {
 						</FormControl>
 					</div>
 					<div className="col-md-2">
-						<FormControl >
+						<FormControl className="w-100" variant="outlined">
 							<InputLabel htmlFor="grouped-select">Grouping</InputLabel>
 							<Select defaultValue="" id="grouped-select">
 								<MenuItem value="">
@@ -101,22 +98,34 @@ class Search extends Component {
 					<div className="col-md-2">
 						<Button
 							variant="contained"
-							color="default"
+							color="primary"
+							size="large"
 							startIcon={<FilterListIcon />}
 							onClick={this.handleClickOpen}
 						>
 							Filter
             </Button>
 
+
 						<Dialog onClose={this.handleClose} aria-labelledby="customized-dialog-title" open={popupOpen} fullWidth="100%">
 							<DialogTitle>{"Filters"}</DialogTitle>
 							<DialogContent>
 								<DialogContentText >
 									<div className="row">
+										<div className="col-md-2">
+											<label>Store</label>
+										</div>
+										<div className="col-md-4"></div>
+										<div className="col-md-4">
+											<label>Ship to Country</label>
+										</div>
+									</div>
+									<div className="row">
 										<div className="col-md-2 form-group">
+
 											<FormControl variant="outlined" className="form-control">
-												<Select name="store_val" value={store_val} id="grouped-select" onChange={this.handleChange}>
-													{this.storeList.map((x, i) => {
+												<Select name="store_val_is" value={store_val_is} id="grouped-select" onChange={this.handleChange}>
+													{this.storeisList.map((x, i) => {
 														return (
 															<MenuItem key={i} value={x.value} >{x.label}</MenuItem>
 														)
@@ -125,6 +134,7 @@ class Search extends Component {
 											</FormControl>
 										</div>
 										<div className="col-md-4">
+
 											<FormControl variant="outlined" className="form-control">
 												<Select name="store_val" value={store_val} id="grouped-select" onChange={this.handleChange}>
 													{this.storeList.map((x, i) => {
@@ -135,11 +145,10 @@ class Search extends Component {
 												</Select>
 											</FormControl>
 										</div>
-										{/* </div>
-									<div className="row"> */}
+
 										<div className="col-md-2 form-group">
 											<FormControl variant="outlined" className="form-control">
-												<Select name="store_val" value={store_val} id="grouped-select" onChange={this.handleChange}>
+												<Select name="store_val_is" value={store_val_is} id="grouped-select" onChange={this.handleChange}>
 													{this.storeList.map((x, i) => {
 														return (
 															<MenuItem key={i} value={x.value} >{x.label}</MenuItem>
@@ -160,7 +169,17 @@ class Search extends Component {
 											</FormControl>
 										</div>
 									</div>
-									<div className="row mt-4">
+									<div className="row">
+										<div className="col-md-4">
+											<label>Order Status</label>
+										</div>
+										<div className="col-md-2"></div>
+										<div className="col-md-4">
+											<label>Ship to State</label>
+										</div>
+									</div>
+
+									<div className="row">
 										<div className="col-md-2 form-group">
 											<FormControl variant="outlined" className="form-control">
 												<Select name="store_val" value={store_val} id="grouped-select" onChange={this.handleChange}>
@@ -212,14 +231,27 @@ class Search extends Component {
 								</DialogContentText>
 							</DialogContent>
 							<DialogActions>
-								<Button onClick={this.handleClose} color="primary">
-									Disagree
-          </Button>
-								<Button onClick={this.handleClose} color="primary" autoFocus>
-									Agree
-          </Button>
+								<Button color="primary" onClick={this.handleClose}>Reset All filters</Button>
+								<div style={{ flex: '1 0 0' }} />
+								<Button onClick={this.handleClose}>
+									Cancle
+          						</Button>
+								<Button variant="contained" onClick={this.handleClose} color="primary">
+									Apply
+          						</Button>
 							</DialogActions>
 						</Dialog>
+					</div>
+					<div className="col-md-2">
+						<Button
+							variant="contained"
+							color="primary"
+							size="large"
+							onClick={this.handleClickOpen}
+							className="float-right"
+						>
+							Export
+            </Button>
 					</div>
 				</div>
 			</div>
